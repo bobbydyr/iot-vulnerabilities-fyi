@@ -4,7 +4,25 @@ frameworkVersion: '3'
 provider:
   name: aws
   runtime: nodejs18.x
+  timeout: 30
+  memorySize: 1024
 
 functions:
   function1:
     handler: index.handler
+    description: this is just a testing function
+    timeout: 30
+    url: true 
+    cors: 
+      allowedOrigins: "'*'"
+      allowedMethods:
+          - GET
+  getAllCompanies:
+    handler: getAllCompanies.handler
+    description: Trying to get all companies
+    timeout: 30
+    url: true 
+    cors: 
+      allowedOrigins: "'*'"
+      allowedMethods:
+          - GET
