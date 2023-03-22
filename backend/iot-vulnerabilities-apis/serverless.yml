@@ -26,3 +26,12 @@ functions:
       allowedOrigins: "'*'"
       allowedMethods:
           - GET
+  getDeviceNamesByComapny: 
+    handler: getDeviceNamesByComapny.handler
+    description: Get all devices that belong to one company
+    timeout: 30
+    url: true 
+    cors: 
+      allowedOrigins: "'*'"
+      allowedMethods:
+          - GET

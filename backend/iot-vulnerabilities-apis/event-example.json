@@ -1,0 +1,50 @@
+{
+    "message": {
+        "version": "2.0",
+        "routeKey": "$default",
+        "rawPath": "/",
+        "rawQueryString": "hello=hey",
+        "headers": {
+            "x-amzn-lambda-proxying-cell": "0",
+            "content-length": "32",
+            "x-amzn-tls-version": "TLSv1.2",
+            "x-forwarded-proto": "https",
+            "postman-token": "5eacc866-290d-4728-a97d-1ca39cac02c2",
+            "x-forwarded-port": "443",
+            "x-forwarded-for": "100.2.187.145",
+            "x-amzn-lambda-proxy-auth": "HmacSHA256, SignedHeaders=x-amzn-lambda-forwarded-client-ip;x-amzn-lambda-forwarded-host;x-amzn-lambda-proxying-cell, Signature=RgCtP0vrpnHvjpP4O1QmL3+D/A9GlP4d0eskNGSMID8=",
+            "accept": "*/*",
+            "x-amzn-lambda-forwarded-client-ip": "100.2.187.145",
+            "x-amzn-tls-cipher-suite": "ECDHE-RSA-AES128-GCM-SHA256",
+            "x-amzn-trace-id": "Self=1-641a79f6-0f36733e204622c62c610446;Root=1-641a79f6-01e774ec0e8b05451919259f",
+            "host": "zq4adzusyc4nz23nlbsnrsdi5u0urvqe.cell-1-lambda-url.us-east-1.on.aws",
+            "content-type": "application/json",
+            "x-amzn-lambda-forwarded-host": "zq4adzusyc4nz23nlbsnrsdi5u0urvqe.lambda-url.us-east-1.on.aws",
+            "accept-encoding": "gzip, deflate, br",
+            "user-agent": "PostmanRuntime/7.29.0"
+        },
+        "queryStringParameters": {
+            "hello": "hey"
+        },
+        "requestContext": {
+            "accountId": "anonymous",
+            "apiId": "zq4adzusyc4nz23nlbsnrsdi5u0urvqe",
+            "domainName": "zq4adzusyc4nz23nlbsnrsdi5u0urvqe.cell-1-lambda-url.us-east-1.on.aws",
+            "domainPrefix": "zq4adzusyc4nz23nlbsnrsdi5u0urvqe",
+            "http": {
+                "method": "GET",
+                "path": "/",
+                "protocol": "HTTP/1.1",
+                "sourceIp": "100.2.187.145",
+                "userAgent": "PostmanRuntime/7.29.0"
+            },
+            "requestId": "d5759f57-359b-463b-bb0a-908d5722c2ec",
+            "routeKey": "$default",
+            "stage": "$default",
+            "time": "22/Mar/2023:03:45:58 +0000",
+            "timeEpoch": 1679456758121
+        },
+        "body": "{\n    \"body-first\": \"Just try\"\n}",
+        "isBase64Encoded": false
+    }
+}
