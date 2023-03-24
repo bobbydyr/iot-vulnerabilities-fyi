@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "mysql": "^2.18.1",
+    "openai": "^3.2.1",
     "serverless-mysql": "^1.5.4"
   }
 }

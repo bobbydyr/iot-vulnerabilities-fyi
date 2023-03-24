@@ -35,3 +35,13 @@ functions:
       allowedOrigins: "'*'"
       allowedMethods:
           - GET
+  getVulnerabilitiesByDevice: 
+    handler: getVulnerabilitiesByDevice.handler
+    description: Handle vulnerabilities provided by NIST and Openai
+    timeout: 90
+    url: true 
+    cors: 
+      allowedOrigins: "'*'"
+      allowedMethods:
+          - GET
+          - POST
