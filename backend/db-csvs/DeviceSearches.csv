@@ -1,0 +1,12 @@
+id,deviceName,imageUrl,companyID,model_version
+2,"Amazon Kindle",NULL,17,
+3,"Philips Hue",NULL,20,
+4,"Amazon Echo",NULL,17,
+6,"Google Nest Camera",NULL,18,
+7,"Cisco IR1101",NULL,23,
+8,"Wyze Camera",NULL,24,
+9,"Abbott Laboratories pacemakers",NULL,25,
+10,"Philips Patient Monitors",NULL,20,
+11,"Tesla",NULL,26,
+12,"Sony Bravia TV",NULL,27,
+13,"Roku TV",NULL,28,

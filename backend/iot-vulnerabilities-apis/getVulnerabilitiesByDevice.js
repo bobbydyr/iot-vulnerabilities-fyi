@@ -1,15 +1,26 @@
 const https = require('https');
+const { resolve } = require('path');
 
 module.exports.handler = async (event) => {
     if(event && event.queryStringParameters && event.queryStringParameters.deviceName) {
         let theDevice = event.queryStringParameters.deviceName
             const cpeRawData = await extractCPEs(theDevice)
-            let cpeList = cpeRawData
+            let cpeUrlList = parseCPEIntoUrls(cpeRawData)
+            const vuls = await Promise.all(cpeUrlList.map((url => extractVulnerabilities(url))))
+            let parsedVuls = parseVuls(vuls, cpeUrlList)
+            // try {
+            //     for(let i = 0; i < vuls.length; i++) {
+            //         let theVul = JSON.parse(vuls[i])
+            //                 parsedVuls.push(theVul)
+            //     }
+            // } catch(err) {
+
+            // }
             return {
                 statusCode: 200,
                 body: JSON.stringify(
                     {
-                        message: cpeList
+                        message: parsedVuls
                     },
                     null,
                     2
@@ -29,32 +40,44 @@ module.exports.handler = async (event) => {
         };
     }
 };
-
-function getVulnerabilities(cpeList) {
-    let rawVulsData = ''
-    for(let i = 0; i < cpeList.length; i++) {
-        let cpeName = cpeList[i]["cpeName"]
-        rawVulsData = extractVulnerabilities(cpeName)
-    }
-    return rawVulsData
+function parseCPEIntoUrls(cpeRawData) {
+    let urls = cpeRawData.map((rawCPE) => {
+        return `https://services.nvd.nist.gov/rest/json/cves/2.0?resultsPerPage=10&cpeName=${rawCPE["cpe"]["cpeName"]}`
+    })
+    return urls
 }
 
-function extractVulnerabilities(cpeName) {
+function parseVuls(vuls, urls) {
+    let parsedVuls = []
+    try {
+        for(let i = 0; i < vuls.length; i++) {
+            let theVul = JSON.parse(vuls[i])
+            if(theVul["resultsPerPage"] > 0) {
+                parsedVuls.push({cpe:urls[i], vuls: theVul["vulnerabilities"]})
+                // parsedVuls.push(theVul["vulnerabilities"])
+            }
+        }
+    } catch(err) {
+
+    }
+    return parsedVuls
+}
+
+function extractVulnerabilities(url) {
+    
     return new Promise((resolve, reject) => {
-        let vuls = ''
-        const req = https.get(`https://services.nvd.nist.gov/rest/json/cves/2.0?resultsPerPage=10&cpeName=${cpeName}`, (resp) => {
+        const req = https.get(url, (resp) => {
+            let res = ''
             resp.on('data', (chunk) => {
-                vuls += chunk
-            });
+                res += chunk
+            })
             resp.on('end', () => {
-                resolve(vuls)
-            });
-        })
-        req.on('error', () => {
-            reject(`Something error occured while querying vulnerability posts related to cpe ${searchWords}`);
+                resolve(res)
+            })
         })
     })
 }
+
 
 function extractCPEs(searchWords) {
     return new Promise((resolve, reject) => {
@@ -64,14 +87,9 @@ function extractCPEs(searchWords) {
         resp.on('data', (chunk) => {
                 rawCpes += chunk
             });
-            resp.on('end', async () => {
+            resp.on('end', () => {
                 let cpes= JSON.parse(rawCpes).products
-                let rawVulsData = ''
-                for(let i = 0; i < cpes.length; i++) {
-                    let cpeName = cpes[i]["cpe"]["cpeName"]
-                    rawVulsData += await extractVulnerabilities(cpeName)
-                }
-                resolve(rawVulsData)
+                resolve(cpes)
             })
         });    
         req.on('error', () => {
