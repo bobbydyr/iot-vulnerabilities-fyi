@@ -23,7 +23,6 @@ for each_device in devices_to_ids.keys():
             if not each_vul_json['cve']['id'] in cve_set:
                 cve_set.add(each_vul_json['cve']['id'])
                 all_cves.append([each_vul_json['cve']['id'],devices_to_ids[each_device]])
-
 with open("Vuls.csv", mode="wt") as csv_file:
     fieldnames = ['cveID', 'deviceID']
     writer = csv.DictWriter(csv_file, fieldnames=fieldnames, delimiter=",", quoting=csv.QUOTE_NONNUMERIC)
