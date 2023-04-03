@@ -19,7 +19,7 @@ functions:
           - GET
   getAllCompanies:
     handler: getAllCompanies.handler
-    description: Trying to get all companies
+    description: Get all companies
     timeout: 30
     url: true 
     cors: 
@@ -44,4 +44,11 @@ functions:
       allowedOrigins: "'*'"
       allowedMethods:
           - GET
-          - POST
+  getAllDevices:
+    handler: getAllDevices.handler
+    description: Get all devices by all companies
+    url: true 
+    cors: 
+      allowedOrigins: "'*'"
+      allowedMethods:
+          - GET

@@ -1,9 +1,9 @@
 const {mysql} = require("./configs.js")
 
 module.exports.handler = async (event) => {
-    var companies = ''
+    var devices = ''
     try {
-        companies = await mysql.query("SELECT * FROM Companies")
+        devices = await mysql.query("SELECT * FROM Devices")
         await mysql.end()
     } catch(err) {
         return {
@@ -21,7 +21,7 @@ module.exports.handler = async (event) => {
             statusCode: 200,
             body: JSON.stringify(
                 {
-                    message: companies
+                    message: devices
                 },
                 null,
                 2

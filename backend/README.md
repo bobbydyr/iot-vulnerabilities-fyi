@@ -1,153 +1,149 @@
 # iot-vulnerabilities-fyi - Backend
 
 
-The backend routes will be hosted on AWS Lambda. Only a single function will be used. And only path needed is.
+The backend routes will be hosted on AWS Lambda.
 
-`<domain>/app`
-
-The backend structure here is To simplify our process and All requests are POST requests, `route` is a parameter included in each request body to specify the backend route.
+The backend structure here is To simplify our process to retrieve IoT devices and vulnerabilities from AWS RDS, and all requests are GET requests.
 
 
-## Available routes
+## Available endpoints
 ---
 
-#### get_all_products
-Get all product names.
+### **get_all_companies** 
 
-Request:
+Get all IoT device vendors.
 
-```json
-{
-  "route": "get_all_products"
-}
-```
+Endpoint: https://frtrmzgviqdg7abtdsisa7dlry0oonap.lambda-url.us-east-1.on.aws/ 
 
+Request Method: GET
 
 Response:
 
 ```json
 {
-  "message": "OK",
-  "data": ["Echo", "MacBook Pro"]
-}
-```
-
----
-
-
-#### get_all_products_by_company
-
-Get all product names by company.
-
-Request
-
-```json
-{
-  "route": "get_all_products_by_company",
-  "company_name": "amazon"
-}
-```
-
-
-Response:
-
-```json
-{
-  "message": "OK",
-  "data": ["Echo", "Kindle"]
-}
-```
-
-
----
-
-
-#### get_product_by_id
-Get product detail by id.
-
-Request:
-
-```json
-{
-  "route": "get_product_by_id",
-  "id": "asfdsvsadfasdf&9hiajsdf"
-}
-```
-
-
-Response:
-
-```json
-{
-  "message": "OK",
-  "data": {
-      "company_name": "amazon",
-      "product_name": "Echo",
-      "vulnerabilities": [
+    "message": [
         {
-          "product_version": "V1.0",
-          "vulnerability": ""
+            "id": 25,
+            "name": "Abbott Laboratories"
         },
         {
-          "product_version": "V1.1",
-          "vulnerability": ""
+            "id": 17,
+            "name": "Amazon"
+        },
+        {
+            "id": 21,
+            "name": "Apple"
         }
-      ]
-    }
+    ]
 }
 ```
 
 ---
 
 
+### **get_all_devices** 
 
-#### get_companies
-Get company names.
-Request:
+Get all IoT devices.
+
+Endpoint: https://oi7b3td5vteg56lexi6o77bgmi0uyvjp.lambda-url.us-east-1.on.aws/
+
+Request Method: GET
+
+Response:
 
 ```json
 {
-  "route": "get_companies",
+    "message": [
+        {
+            "id": 2,
+            "deviceName": "Amazon Kindle",
+            "imageUrl": null,
+            "companyID": 17,
+            "model_version": ""
+        },
+        {
+            "id": 3,
+            "deviceName": "Philips Hue",
+            "imageUrl": null,
+            "companyID": 20,
+            "model_version": ""
+        }
+    ]
 }
 ```
+
+
+---
+
+### **get_devices_by_company** 
+
+Get all IoT devices belonging to the given vendor/company.
+
+Endpoint: https://zq4adzusyc4nz23nlbsnrsdi5u0urvqe.lambda-url.us-east-1.on.aws?company={Company_ID}
+
+Request Method: GET
+
+Required parameter: company
+
+Request: https://zq4adzusyc4nz23nlbsnrsdi5u0urvqe.lambda-url.us-east-1.on.aws?company=17
 
 
 Response:
 
 ```json
 {
-  "message": "OK",
-  "data": ["amazon", "apple", "meta"]
+    "message": [
+        {
+            "id": 2,
+            "deviceName": "Amazon Kindle",
+            "imageUrl": null,
+            "companyID": 17,
+            "model_version": ""
+        },
+        {
+            "id": 4,
+            "deviceName": "Amazon Echo",
+            "imageUrl": null,
+            "companyID": 17,
+            "model_version": ""
+        },
+        {
+            "id": 5,
+            "deviceName": "Amazon Fire TV",
+            "imageUrl": null,
+            "companyID": 17,
+            "model_version": ""
+        }
+    ]
 }
 ```
 
 ---
 
+### **get_vulnerabilities_by_device** 
 
-#### create_vulnerability
-Create a new vulnerability.
-Request:
+Get vulnerabilities belonging to the given IoT Device.
 
-```json
-{
-  "route": "create_vulnerability",
-  "company_name": "amazon",
-  "product_name": "Echo",
-  "product_version": "V1.0",
-  "vulnerability": "",
-}
-```
+Endpoint: https://dtz3mk3eirbwmxaj7qtgaowxla0cmqfu.lambda-url.us-east-1.on.aws?device={Device_ID}
+
+Request Method: GET
+
+Required parameter: device
+
+Request: https://dtz3mk3eirbwmxaj7qtgaowxla0cmqfu.lambda-url.us-east-1.on.aws?device=2
 
 
 Response:
 
 ```json
 {
-  "message": "OK",
+    "message": [
+        {
+            "id": 1,
+            "deviceID": 2,
+            "summary": "CVE-2012-4248 is a security vulnerability that affects the Apache Struts web framework. The vulnerability is caused by a flaw in the way that Struts handles user input, which can allow an attacker to execute arbitrary code on the affected system.\n\nThe vulnerability was first discovered in August 2012 and was assigned CVE-2012-4248. It affects all versions of Apache Struts prior to version 2.3.1.1.\n\nThe vulnerability is caused by a lack of input validation in the Struts framework. This means that an attacker can submit specially crafted input to a Struts application, which can cause the application to execute arbitrary code.\n\nTo exploit the vulnerability, an attacker would need to submit a specially crafted HTTP request to the Struts application. This request would need to contain a malicious payload that would be executed by the application.\n\nThe vulnerability was patched in Apache Struts version 2.3.1.1, which was released in August 2012. Users of Apache Struts are advised to upgrade to this version or later to protect themselves from this vulnerability.\n\nOverall, CVE-2012-4248 is a serious security vulnerability that can allow an attacker to take control of a system running a vulnerable version of Apache Struts. It underscores the importance of keeping software up-to-date and implementing strong input validation in web applications.",
+            "cveID": "CVE-2012-4248"
+        }
+    ]
 }
 ```
-
-
-
-
----

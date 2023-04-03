@@ -4,7 +4,7 @@ module.exports.handler = async (event) => {
     if(event && event.queryStringParameters && event.queryStringParameters.company) {
         try {
             let theCompanyID = event.queryStringParameters.company
-            deviceNames = await mysql.query("SELECT * FROM DeviceNames where companyID = ?", [theCompanyID])
+            deviceNames = await mysql.query("SELECT * FROM Devices where companyID = ?", [theCompanyID])
             await mysql.end();
         }  catch(err) {
             return {
@@ -42,15 +42,4 @@ module.exports.handler = async (event) => {
             ),
         };
     }
-
-    return {
-        statusCode: 200,
-        body: JSON.stringify(
-            {
-                message: event
-            },
-            null,
-            2
-        ),
-    };
 }
