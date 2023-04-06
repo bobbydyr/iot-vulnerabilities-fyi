@@ -1,8 +1,11 @@
 import requests
 import csv
+import json
 
+f = open('./api-keys.json')
+keys = json.load(f)
 GPT_URL = "https://api.openai.com/v1/chat/completions"
-HEADERS = {"Content-Type": "application/json", "Authorization": "Bearer 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"}
+HEADERS = {"Content-Type": "application/json", "Authorization": "Bearer {}".format(keys["gpt-key"])}
 
 all_cves = []
 line_count = 0
@@ -18,10 +21,20 @@ all_summaries = []
 post_data = {"model": "gpt-3.5-turbo", "temperature": 0.7, "messages": [{"role": "user", "content": ''}]}
 # summary_response = requests.post(GPT_URL, headers=HEADERS, json=post_data).json()
 for each_cve in all_cves:
-    the_prompt = "https://nvd.nist.gov/vuln/detail/{}, summarize this vulnerability, including its description and solutions, in simple language within 200 - 220 words.".format(each_cve)
-    post_data["messages"][0]["content"] = each_cve
-    summary_response = requests.post(GPT_URL, headers=HEADERS, json=post_data).json()
-    all_summaries.append([each_cve, summary_response["choices"][0]["message"]["content"]])
+    try:
+        cve_url = "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId={}".format(each_cve)
+        cve_response = responses = requests.get(cve_url).json()
+        if responses["resultsPerPage"] > 0:
+            the_cve_json = responses["vulnerabilities"][0]["cve"]
+            the_prompt = "Summarize the descriptions and possible solutions of this cve within 200 - 220 words: {}".format(json.dumps(the_cve_json))
+            post_data["messages"][0]["content"] = the_prompt
+            summary_response = requests.post(GPT_URL, headers=HEADERS, json=post_data).json()
+            if "choices" in summary_response:
+                all_summaries.append([each_cve, summary_response["choices"][0]["message"]["content"]])
+                if len(all_summaries) == 1:
+                    print(all_summaries)
+    except:
+        print("an exception occured")
 
 cve_to_device = {}
 line_count = 0

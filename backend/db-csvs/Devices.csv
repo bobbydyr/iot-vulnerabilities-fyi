@@ -5,7 +5,7 @@ id,deviceName,imageUrl,companyID,model_version
 5,"Amazon Fire TV",NULL,17,
 6,"Google Nest Camera",NULL,18,
 7,"Cisco IR1101",NULL,23,
-8,"Wyze Camera",NULL,24,
+8,"Wyze",NULL,24,
 9,"Abbott Laboratories pacemakers",NULL,25,
 10,"Philips Patient Monitors",NULL,20,
 11,"Tesla Model 3/S/X",NULL,26,
