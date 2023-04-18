@@ -27,12 +27,16 @@ export default function Home() {
 
   const getAllDevices = async () => {
     const products = await get_all_devices();
-    setProductsData(products['message']);
+    if (products) {
+      setProductsData(products['message']);
+    }
   }
 
   const getAllCompanies = async () => {
     const companies = await get_all_companies();
-    setCompaniesData(companies['message']);
+    if (companies) {
+      setCompaniesData(companies['message']);
+    }
   }
 
   useEffect(() => {

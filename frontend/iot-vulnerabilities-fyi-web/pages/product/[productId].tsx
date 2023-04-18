@@ -59,14 +59,17 @@ export default function ProductPage() {
     const vulnerabilities = await get_vulnerabilities_by_device(id);
     setVulLoading(false);
     console.log(vulnerabilities);
-    setVulnerabilitiesData(vulnerabilities['message']);
+    if (vulnerabilities) {
+      setVulnerabilitiesData(vulnerabilities['message']);
+    }
   }
 
   const getSelectedDevice = async (productId_: number) => {
     const productsRaw = await get_all_devices();
-    const products = productsRaw['message'];
-
-    setSelectedProduct(products.filter((item: Product) => item.id === productId_)[0])
+    if (productsRaw) {
+      const products = productsRaw['message'];
+      setSelectedProduct(products.filter((item: Product) => item.id === productId_)[0])
+    }
   }
 
   useEffect(() => {

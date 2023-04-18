@@ -32,12 +32,17 @@ export default function CompanyPage() {
     const products = await get_devices_by_company(company_id);
     setProductsLoading(false);
     console.log(products);
-    setProductsData(products['message']);
+    if (products) {
+      setProductsData(products['message']);
+
+    }
   }
 
   const getAllCompanies = async (companyId_: number) => {
     const companies = await get_all_companies();
-    setSelectedCompany(companies['message'].find((item: Company) => item.id == companyId_));
+    if (companies) {
+      setSelectedCompany(companies['message'].find((item: Company) => item.id == companyId_));
+    }
   }
 
 
