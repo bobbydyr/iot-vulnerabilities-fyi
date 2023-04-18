@@ -95,19 +95,6 @@ export default function ProductPage() {
 
 
             <div className='w-full flex flex-row justify-start items-center flex-wrap bg-slate-100 rounded-[20px]  gap-[30px] p-[20px]'>
-              {/* {productVersions.slice(0, 10).map((item, index) => {
-                return (
-                  <button 
-                    key={index} 
-                    className='w-[150px] h-[150px] flex flex-col justify-center items-center bg-slate-200 font-[500] rounded-[20px] hover:bg-slate-300 transition-all'
-                    onClick={() => {
-                      setOpenVersionModal(true)
-                    }}
-                  >
-                    {item.version}
-                  </button>
-                )
-              })} */}
               
               {
                 vulLoading ? (
@@ -120,10 +107,15 @@ export default function ProductPage() {
 
               {vulnerabilitiesData && vulnerabilitiesData?.slice(0, 100).map((item, index) => {
                 return (
-                  <div key={index}
-                    className='p-4 flex flex-col justify-center items-center bg-slate-200 font-[500] rounded-[20px] hover:bg-slate-300 transition-all'
-                  >
-                    {item.summary}
+                  <div key={index}>
+                    <div
+                      className='p-4 flex flex-col justify-center items-left bg-slate-200 font-[500] rounded-[20px] hover:bg-slate-300 transition-all'
+                    >
+                      <span>{item.summary}</span>
+                      <div className='p-1 mt-4 bg-pink-200 w-[200px] flex justify-center items-center rounded-xl text-sm'>
+                        {item.cveID}
+                      </div>
+                    </div>
                   </div>
                 )
               })}
