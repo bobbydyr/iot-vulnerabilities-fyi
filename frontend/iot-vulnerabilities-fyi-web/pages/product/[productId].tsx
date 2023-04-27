@@ -87,7 +87,6 @@ export default function ProductPage() {
 
           <div className='w-full'>
             <BackArrowComponent />
-
                         
             <div className=' text-[30px] font-[600] text-black/60 my-[20px]'>
               {selectedProduct?.deviceName}
@@ -111,10 +110,20 @@ export default function ProductPage() {
                     <div
                       className='p-4 flex flex-col justify-center items-left bg-slate-200 font-[500] rounded-[20px] hover:bg-slate-300 transition-all'
                     >
+                      <span className='my-[20px] font-bold text-[18px]'>
+                        Vulnerability ID: {item.cveID}
+                      </span>
                       <span>{item.summary}</span>
                       <div className='p-1 mt-4 bg-pink-200 w-[200px] flex justify-center items-center rounded-xl text-sm'>
                         {item.cveID}
                       </div>
+
+                      <span className='my-[20px] text-[16px]'>
+                        More Details on
+                        <a 
+                          className='text-blue-500 hover:text-blue-700 transition-all'
+                          href={`https://nvd.nist.gov/vuln/detail/${item.cveID}`}> NIST</a>
+                      </span>
                     </div>
                   </div>
                 )

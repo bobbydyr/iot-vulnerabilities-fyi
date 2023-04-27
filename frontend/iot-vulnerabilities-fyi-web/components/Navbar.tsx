@@ -10,16 +10,16 @@ export default function NavBar() {
     <>
       <Navbar isBordered variant="floating">
         <Navbar.Brand>
-          <Text b color="inherit" hideIn="xs">
+          <Text b color="inherit">
             iot vulnerabilities fyi
           </Text>
         </Navbar.Brand>
-        <Navbar.Content hideIn="xs">
-          <Navbar.Link href="/">Companies</Navbar.Link>
-          <Navbar.Link href="/product">Products</Navbar.Link>
-          <Navbar.Link href="/vulnerabilities">Vulnerabilities</Navbar.Link>
-        </Navbar.Content>
         <Navbar.Content>
+          <Navbar.Link href="/">Products</Navbar.Link>
+          <Navbar.Link href="/company">Companies</Navbar.Link>
+          {/* <Navbar.Link href="/vulnerabilities">Vulnerabilities</Navbar.Link> */}
+        </Navbar.Content>
+        <Navbar.Content hideIn={'xs'}>
           <Navbar.Link color="inherit" href="#">
             Login
           </Navbar.Link>
