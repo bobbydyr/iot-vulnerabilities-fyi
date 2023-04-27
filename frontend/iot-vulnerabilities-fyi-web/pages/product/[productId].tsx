@@ -2,13 +2,16 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
-import { Button, Text } from '@nextui-org/react'
+import { Button, Loading, Text } from '@nextui-org/react'
 import Layout from '@/components/Layout'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import { motion } from "framer-motion";
 import VersionDetails from '@/components/VersionDetails'
 import BackArrowComponent from '@/components/BackArrowComponent'
+import { useRouter } from 'next/router'
+import { get_all_devices, get_vulnerabilities_by_device } from '@/utilities/ApiManager'
+import { Product, Vulnerability } from '@/utilities/types'
 
 
 
@@ -41,9 +44,41 @@ const productVersions = [
 
 
 
-export default function Product() {
+export default function ProductPage() {
   const [selectedId, setSelectedId] = useState<null | string>(null)
   const [openVersionModal, setOpenVersionModal] = useState(false)
+  const {productId} = useRouter().query;
+  const [vulnerabilitiesData, setVulnerabilitiesData] = useState<Vulnerability[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [productsData, setProductsData] = useState<Product[]>([]);
+  const [vulLoading, setVulLoading] = useState(true);
+
+
+  const getVulnerabilitiesByDevice = async (id: number) => {
+    setVulLoading(true);
+    const vulnerabilities = await get_vulnerabilities_by_device(id);
+    setVulLoading(false);
+    console.log(vulnerabilities);
+    if (vulnerabilities) {
+      setVulnerabilitiesData(vulnerabilities['message']);
+    }
+  }
+
+  const getSelectedDevice = async (productId_: number) => {
+    const productsRaw = await get_all_devices();
+    if (productsRaw) {
+      const products = productsRaw['message'];
+      setSelectedProduct(products.filter((item: Product) => item.id === productId_)[0])
+    }
+  }
+
+  useEffect(() => {
+    if (productId) {
+      getVulnerabilitiesByDevice(Number(productId));
+      getSelectedDevice(Number(productId));
+    }
+  }, [productId])
+
 
   return (
     <>
@@ -55,25 +90,40 @@ export default function Product() {
 
                         
             <div className=' text-[30px] font-[600] text-black/60 my-[20px]'>
-              Echo
+              {selectedProduct?.deviceName}
             </div>
 
 
             <div className='w-full flex flex-row justify-start items-center flex-wrap bg-slate-100 rounded-[20px]  gap-[30px] p-[20px]'>
-              {productVersions.slice(0, 10).map((item, index) => {
-                return (
-                  <button 
-                    key={index} 
-                    className='w-[150px] h-[150px] flex flex-col justify-center items-center bg-slate-200 font-[500] rounded-[20px] hover:bg-slate-300 transition-all'
-                    onClick={() => {
-                      setOpenVersionModal(true)
+              
+              {
+                vulLoading ? (
+                  <Loading 
+                    size='md'
+                    color='primary'
+                  />
+                ) : null
+              }
 
-                    }}
-                  >
-                    {item.version}
-                  </button>
+              {vulnerabilitiesData && vulnerabilitiesData?.slice(0, 100).map((item, index) => {
+                return (
+                  <div key={index}>
+                    <div
+                      className='p-4 flex flex-col justify-center items-left bg-slate-200 font-[500] rounded-[20px] hover:bg-slate-300 transition-all'
+                    >
+                      <span>{item.summary}</span>
+                      <div className='p-1 mt-4 bg-pink-200 w-[200px] flex justify-center items-center rounded-xl text-sm'>
+                        {item.cveID}
+                      </div>
+                    </div>
+                  </div>
                 )
               })}
+
+
+              {(!vulLoading && vulnerabilitiesData.length ==0 ) ?? 
+                <div>No Data</div>
+              }
             </div>
  
           </div>

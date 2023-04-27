@@ -2,9 +2,13 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
-import { Button, Text } from '@nextui-org/react'
+import { Button, Loading, Text } from '@nextui-org/react'
 import Layout from '@/components/Layout'
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import { type } from 'os'
+import { fetchData, get_all_companies, get_all_devices } from '@/utilities/ApiManager'
+import { Company, Product } from '@/utilities/types'
 
 
 const companies = [
@@ -15,8 +19,31 @@ const products = [
   "Echo", "Xiaomi Camera", "Google Home", "Apple HomePod", "Microsoft Surface", "Samsung Galaxy", "Huawei Mate", "Facebook Portal", "Intel Core", "Qualcomm Snapdragon", "Cisco Webex", "Nvidia GeForce", "Dell XPS", "VMware vSphere", "Oracle Database", "IBM Cloud", "HP Elite", "Cisco Webex", "Toshiba Satellite", "Sony PlayStation", "LG G", "ZTE Axon", "Lenovo ThinkPad", "Broadcom BCM", "Hewlett Packard", "Hewlett-Packard", "Hewlett Packard Enterprise", "Hewlett-Packa"
 ]
 
+
 export default function Home() {
   const { push } = useRouter()
+  const [companiesData, setCompaniesData] = useState<Company[]>([]);
+  const [productsData, setProductsData] = useState<Product[]>([]);
+
+  const getAllDevices = async () => {
+    const products = await get_all_devices();
+    if (products) {
+      setProductsData(products['message']);
+    }
+  }
+
+  const getAllCompanies = async () => {
+    const companies = await get_all_companies();
+    if (companies) {
+      setCompaniesData(companies['message']);
+    }
+  }
+
+  useEffect(() => {
+    getAllCompanies();
+    getAllDevices();
+  }, [])
+
 
   return (
     <>
@@ -34,16 +61,24 @@ export default function Home() {
               View by companies
             </div>
             <div className='w-full flex flex-row justify-start items-center flex-wrap bg-slate-100 rounded-[20px]  gap-[30px] p-[20px]'>
-              {companies.slice(0, 10).map((item, index) => {
+              {companiesData.length == 0 ? (
+                  <Loading
+                    size='md'
+                    color='primary'
+                  />
+                ) : null
+              }
+
+              {companiesData && companiesData?.slice(0, 100).map((item, index) => {
                 return (
                   <button 
                     key={index} 
-                    className='w-[150px] h-[150px] flex flex-col justify-center items-center bg-slate-200 font-[500] rounded-[20px] hover:bg-slate-300 transition-all'
+                    className='w-[150px] h-[150px] flex flex-col justify-center items-center bg-slate-200 font-[500] rounded-[20px] hover:bg-slate-300 transition-all p-2'
                     onClick={() => {
-                      push("/company/1")
+                      push(`/company/${item.id}`)
                     }}
                   >
-                    {item}
+                    {item.name}
                   </button>
                 )
               })}
@@ -54,16 +89,23 @@ export default function Home() {
               View by products
             </div>
             <div className='w-full flex flex-row justify-start items-center flex-wrap bg-slate-100 rounded-[20px]  gap-[30px] p-[20px]'>
-              {products.slice(0, 10).map((item, index) => {
+              {productsData.length == 0 ? (
+                  <Loading
+                    size='md'
+                    color='primary'
+                  />
+                ) : null
+              }
+              {productsData && productsData.slice(0, 100).map((item, index) => {
                 return (
                   <button 
                     key={index} 
-                    className='w-[150px] h-[150px] flex flex-col justify-center items-center bg-slate-200 font-[500] rounded-[20px] hover:bg-slate-300 transition-all'
+                    className='w-[150px] h-[150px] flex flex-col justify-center items-center bg-slate-200 font-[500] rounded-[20px] hover:bg-slate-300 transition-all p-2'
                     onClick={() => {
-                      push("/product/1")
+                      push(`/product/${item.id}`)
                     }}
                   >
-                    {item}
+                    {item.deviceName}
                   </button>
                 )
               })}
