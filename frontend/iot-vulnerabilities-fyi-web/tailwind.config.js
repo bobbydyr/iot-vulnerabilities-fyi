@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
   content: [
     "./app/**/*.{js,ts,jsx,tsx}",
@@ -15,7 +16,11 @@ module.exports = {
       lg: '1024px',
       xl: '1440px',
     },
-    extend: {},
+    extend: {
+      boxShadow: {
+      'custom': '15px 15px 30px #bebebe, -15px -15px 30px #ffffff'
+      }
+    },
   },
   plugins: [],
 }
