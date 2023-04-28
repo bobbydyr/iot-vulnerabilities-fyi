@@ -86,11 +86,16 @@ export default function Home() {
                   return (
                     <button
                       key={index}
-                      className="w-[150px] h-[150px] flex flex-col justify-center items-center bg-slate-200 font-[500] rounded-[20px] hover:bg-slate-300 transition-all p-2"
+                      className="w-[150px] min-h-[150px] flex flex-col justify-center items-center bg-slate-200 font-[500] rounded-[20px] hover:bg-slate-300 transition-all p-2"
                       onClick={() => {
                         push(`/product/${item.id}`);
                       }}
                     >
+                      <img 
+                        src={`/device-images/${item.deviceName}.jpg`} 
+                        alt="" 
+                        className="rounded-[10px] m-1"
+                      />
                       {item.deviceName}
                     </button>
                   );
