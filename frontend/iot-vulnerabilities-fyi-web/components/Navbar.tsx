@@ -19,7 +19,7 @@ export default function NavBar() {
           <Navbar.Link href="/company">Companies</Navbar.Link>
           {/* <Navbar.Link href="/vulnerabilities">Vulnerabilities</Navbar.Link> */}
         </Navbar.Content>
-        <Navbar.Content hideIn={'xs'}>
+        {/* <Navbar.Content hideIn={'xs'}>
           <Navbar.Link color="inherit" href="#">
             Login
           </Navbar.Link>
@@ -28,7 +28,7 @@ export default function NavBar() {
               Sign Up
             </Button>
           </Navbar.Item>
-        </Navbar.Content>
+        </Navbar.Content> */}
       </Navbar>
     </>
   );
