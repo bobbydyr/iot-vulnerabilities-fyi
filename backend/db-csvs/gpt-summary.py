@@ -13,13 +13,11 @@ with open('./Vuls.csv') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     for row in csv_reader:
         if line_count != 0:
-            # the_prompt = "https://nvd.nist.gov/vuln/detail/{}, summarize this vulnerability, including its description and solutions, in simple language within 180 - 200 words.".format(row[0])
             all_cves.append(row[0])
         line_count += 1
 
 all_summaries = []
 post_data = {"model": "gpt-3.5-turbo", "temperature": 0.7, "messages": [{"role": "user", "content": ''}]}
-# summary_response = requests.post(GPT_URL, headers=HEADERS, json=post_data).json()
 for each_cve in all_cves:
     try:
         cve_url = "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId={}".format(each_cve)

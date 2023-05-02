@@ -11,6 +11,7 @@ with open('./DeviceSearches.csv') as csv_file:
         else:
             devices_to_ids[row[1]] = row[0]
             line_count += 1
+
 all_cves = []
 cve_set = set()
 for each_device in devices_to_ids.keys():
@@ -18,11 +19,11 @@ for each_device in devices_to_ids.keys():
     responses = requests.get(the_url).json()
     print(the_url)
     if responses["resultsPerPage"] > 0:
-        print("hey")
         for each_vul_json in responses['vulnerabilities']:
             if not each_vul_json['cve']['id'] in cve_set:
                 cve_set.add(each_vul_json['cve']['id'])
                 all_cves.append([each_vul_json['cve']['id'],devices_to_ids[each_device]])
+
 with open("Vuls.csv", mode="wt") as csv_file:
     fieldnames = ['cveID', 'deviceID']
     writer = csv.DictWriter(csv_file, fieldnames=fieldnames, delimiter=",", quoting=csv.QUOTE_NONNUMERIC)
