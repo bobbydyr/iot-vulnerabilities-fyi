@@ -15,7 +15,7 @@ import {
 import { Company, Product } from "@/utilities/types";
 import { BsFilterCircle } from "react-icons/bs";
 
-export default function Home() {
+export default function CompanyIndex() {
   const { push } = useRouter();
   const [companiesData, setCompaniesData] = useState<Company[]>([]);
   const [productsData, setProductsData] = useState<Product[]>([]);
@@ -55,55 +55,29 @@ export default function Home() {
       <Layout>
         <div className="w-full flex flex-col justify-center items-center gap-[100px] py-[100px] px-[80px]">
           <div className="w-full">
-            <div className="p-4 bg-slate-100 rounded-[20px] flex flex-row justify-center items-center text-gray-500">
-              Post a new vulnerability here
-              <button className="px-5 py-2 bg-slate-200 mx-2 rounded-full hover:bg-slate-300 transition-all">
-                Create
-              </button>
-            </div>
-
             <div className=" text-[30px] font-[600] text-black/60 my-[20px]">
-              View by products
+              View by companies
             </div>
-
-            <button
-              className="my-[20px] px-[30px] py-[20px] bg-slate-100 w-[200px] rounded-full flex flex-fow justify-center items-center hover:bg-slate-200 transition-all"
-              onClick={() => setShowFilter(true)}
-            >
-              Open Filter
-              <BsFilterCircle className="ml-2" size={20} />
-            </button>
-
             <div className="w-full flex flex-row justify-start items-center flex-wrap bg-slate-100 rounded-[20px]  gap-[30px] p-[20px]">
-              {productsData.length == 0 ? (
+              {companiesData.length == 0 ? (
                 <Loading size="md" color="primary" />
               ) : null}
-              {productsData &&
-                productsData.slice(0, 100).map((item, index) => {
-                  if (!selectedCompanies.includes(item.companyID)) {
-                    return null;
-                  }
+
+              {companiesData &&
+                companiesData?.slice(0, 100).map((item, index) => {
                   return (
                     <button
                       key={index}
-                      className="w-[150px] min-h-[150px] flex flex-col justify-center items-center  font-[500] rounded-[20px] bg-white hover:bg-slate-200 transition-all p-2 shadow-custom"
+                      className="w-[150px] h-[150px] flex flex-col justify-center items-center bg-slate-200 font-[500] rounded-[20px] hover:bg-slate-300 transition-all p-2"
                       onClick={() => {
-                        push(`/product/${item.id}`);
+                        push(`/company/${item.id}`);
                       }}
                     >
-                      <img 
-                        src={`/device-images/${item.deviceName}.jpg`} 
-                        alt="" 
-                        className="rounded-[10px] m-2"
-                      />
-                      <span className="text-slate-600">
-                        {item.deviceName}
-                      </span>
+                      {item.name}
                     </button>
                   );
                 })}
             </div>
-
           </div>
         </div>
 
@@ -121,11 +95,13 @@ export default function Home() {
           </Modal.Header>
           <Modal.Body>
             {/* A checkbox what select all companies and deselect */}
-
-            <div className="pl-[30px] flex flex-row flex-wrap justify-start items-center gap-[10px]">
-              <Switch
+            <div className="flex flex-row flex-wrap justify-start items-center gap-[10px]">
+              <input
+                type="checkbox"
+                id="all"
+                name="all"
                 checked={selectedCompanies.length == companiesData.length}
-                color={"secondary"}
+                value="all"
                 onChange={(e) => {
                   if (e.target.checked) {
                     setSelectedCompanies(companiesData.map((item) => item.id));
@@ -136,6 +112,7 @@ export default function Home() {
               />
               <label htmlFor="all">All</label>
             </div>
+
             <div className="p-[30px] grid grid-cols-3 gap-2 justify-center items-center">
               {companiesData.length > 0 &&
                 companiesData.map((item, index) => {
@@ -167,7 +144,7 @@ export default function Home() {
                         }}
                       />
 
-                      <label htmlFor={item.name} className="text-slate-700">{item.name}</label>
+                      <label htmlFor={item.name}>{item.name}</label>
                     </div>
                   );
                 })}
